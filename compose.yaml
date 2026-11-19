@@ -1,0 +1,20 @@
+# Runs the site behind an existing Traefik instance.
+# Adjust the network, entrypoint and certresolver names to match your Traefik config.
+services:
+  ram-site:
+    build: .
+    image: ram-site
+    container_name: ram-site
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ram-site.rule=Host(`schule.ram.pogray.net`)
+      - traefik.http.routers.ram-site.entrypoints=websecure
+      - traefik.http.routers.ram-site.tls.certresolver=letsencrypt
+      - traefik.http.services.ram-site.loadbalancer.server.port=80
+
+networks:
+  traefik:
+    external: true
