@@ -1,5 +1,7 @@
 # Serves the prebuilt site. Run "npm run build" locally first so dist/ exists.
-FROM nginx:1.27-alpine
-COPY dist /usr/share/nginx/html
+FROM docker.io/library/node:22-alpine
+WORKDIR /app
+COPY dist ./dist
+COPY server.mjs ./
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.mjs"]
